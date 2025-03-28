@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý sách - Admin</title>
+    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="./css/admin-book.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">Admin - YourWebsite</div>
+        <div class="user-info">
+            <span id="admin-name">[Admin Name]</span>
+            <a href="/logout">Đăng xuất</a>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-book-open" style="padding-right: 8px;"></i>
+            <span>Books Admin</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="admin-dashboard.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt" style="padding-right: 8px;"></i>
+                    <span>Bảng điều khiển</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-readers.html" class="nav-link">
+                    <i class="fas fa-users" style="padding-right: 8px;"></i>
+                    <span>Quản lý độc giả</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-book.html" class="nav-link">
+                    <i class="fas fa-book" style="padding-right: 8px;"></i>
+                    <span>Quản lý sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-copybook.html" class="nav-link">
+                    <i class="fas fa-book" style="padding-right: 8px;"></i>
+                    <span>Quản lý bản sao sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-library-cards.html" class="nav-link">
+                    <i class="fas fa-id-card" style="padding-right: 8px;"></i>
+                    <span>Quản lý thẻ thư viện</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-borrow-records.html" class="nav-link">
+                    <i class="fas fa-tasks" style="padding-right: 8px;"></i>
+                    <span>Quản lý phiếu mượn trả</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-book-reservations.html" class="nav-link">
+                    <i class="fas fa-shopping-cart" style="padding-right: 8px;"></i>
+                    <span>Quản lý đặt mượn sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-stats.html" class="nav-link">
+                    <i class="fas fa-chart-area" style="padding-right: 8px;"></i>
+                    <span>Thống kê</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-toggle">
+            <button id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </aside>
+
+    <main>
+        <div class="main-header">
+            <h1>Quản lý sách</h1>
+            <button class="btn" onclick="showAddBookPopup()">
+                <i class="fas fa-plus"></i> Thêm sách
+            </button>
+        </div>
+
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm theo mã sách hoặc tên sách..." oninput="searchBooks()">
+                    <span class="search-icon" onclick="searchBooks()"><i class="fas fa-search"></i></span>
+                    <span class="clear-search" id="clear-search" onclick="clearSearch()"><i class="fas fa-times"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <table id="book-list">
+            <thead>
+                <tr>
+                    <th>ID Sách</th>
+                    <th>Tên sách</th>
+                    <th>Mô tả</th>
+                    <th>Giá bìa sách</th>
+                    <th>Tác giả</th>
+                    <th>Thể loại</th>
+                    <th>Ảnh</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu sẽ được thêm động bằng JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Popup thêm sách -->
+        <div id="add-book-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('add-book-popup')">×</span>
+                <h2>Thêm sách</h2>
+                <div class="form-group">
+                    <label>ID Sách <span class="required">*</span>:</label>
+                    <input type="text" id="add-book-id" required>
+                </div>
+                <div class="form-group">
+                    <label>Tên sách <span class="required">*</span>:</label>
+                    <input type="text" id="add-book-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả <span class="required">*</span>:</label>
+                    <textarea id="add-book-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Giá bìa sách (VNĐ) <span class="required">*</span>:</label>
+                    <input type="number" id="add-book-price" required>
+                </div>
+                <div class="form-group">
+                    <label>Tác giả <span class="required">*</span>:</label>
+                    <input type="text" id="add-book-author" required>
+                </div>
+                <div class="form-group">
+                    <label>Thể loại <span class="required">*</span>:</label>
+                    <select id="add-book-category" required>
+                        <option value="">Chọn thể loại</option>
+                        <option value="van-hoc">Tài liệu học tập</option>
+                        <option value="khoa-hoc">Tài liệu lịch sử</option>
+                        <option value="lich-su">Sách phát triển bản thân</option>
+                        <option value="tam-ly">Tiểu thuyết</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ảnh sách <span class="required">*</span>:</label>
+                    <input type="file" id="add-book-image" accept="image/*" required>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-save" onclick="addBook()">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('add-book-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup chỉnh sửa sách -->
+        <div id="edit-book-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('edit-book-popup')">×</span>
+                <h2>Chỉnh sửa sách</h2>
+                <div class="form-group">
+                    <label>ID Sách:</label>
+                    <input type="text" id="edit-book-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Tên sách:</label>
+                    <input type="text" id="edit-book-title" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả <span class="required">*</span>:</label>
+                    <textarea id="edit-book-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Giá bìa sách (VNĐ):</label>
+                    <input type="number" id="edit-book-price" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Tác giả:</label>
+                    <input type="text" id="edit-book-author" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Thể loại:</label>
+                    <select id="edit-book-category" disabled>
+                        <option value="">Chọn thể loại</option>
+                        <option value="van-hoc">Tài liệu học tập</option>
+                        <option value="khoa-hoc">Tài liệu lịch sử</option>
+                        <option value="lich-su">Sách phát triển bản thân</option>
+                        <option value="tam-ly">Tiểu thuyết</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ảnh sách:</label>
+                    <input type="file" id="edit-book-image" accept="image/*">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-save" onclick="saveEditedBook()">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('edit-book-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup xác nhận xóa sách -->
+        <div id="delete-book-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('delete-book-popup')">×</span>
+                <h2>Xác nhận xóa sách</h2>
+                <p>Bạn có chắc chắn muốn xóa sách này?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-confirm" onclick="deleteBook()">
+                        <i class="fas fa-check"></i> Xác nhận
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('delete-book-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup thông báo tùy chỉnh -->
+        <div id="custom-alert-popup" class="custom-alert" style="display:none;">
+            <div class="custom-alert-content">
+                <p id="custom-alert-message"></p>
+                <button class="btn btn-ok" onclick="closeCustomAlert()">OK</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="./js/admin-book.js"></script>
+</body>
+</html>

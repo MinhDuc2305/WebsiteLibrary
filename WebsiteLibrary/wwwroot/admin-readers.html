@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý độc giả - Admin</title>
+    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="./css/admin-readers.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">Admin - YourWebsite</div>
+        <div class="user-info">
+            <span id="admin-name">[Admin Name]</span>
+            <a href="/logout">Đăng xuất</a>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-book-open" style="padding-right: 8px;"></i>
+            <span>Books Admin</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="admin-dashboard.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt" style="padding-right: 8px;"></i>
+                    <span>Bảng điều khiển</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-readers.html" class="nav-link">
+                    <i class="fas fa-users" style="padding-right: 8px;"></i>
+                    <span>Quản lý độc giả</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-book.html" class="nav-link">
+                    <i class="fas fa-book" style="padding-right: 8px;"></i>
+                    <span>Quản lý sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-copybook.html" class="nav-link">
+                    <i class="fas fa-book" style="padding-right: 8px;"></i>
+                    <span>Quản lý bản sao sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-library-cards.html" class="nav-link">
+                    <i class="fas fa-id-card" style="padding-right: 8px;"></i>
+                    <span>Quản lý thẻ thư viện</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-borrow-records.html" class="nav-link">
+                    <i class="fas fa-tasks" style="padding-right: 8px;"></i>
+                    <span>Quản lý phiếu mượn trả</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-book-reservations.html" class="nav-link">
+                    <i class="fas fa-shopping-cart" style="padding-right: 8px;"></i>
+                    <span>Quản lý đặt mượn sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-stats.html" class="nav-link">
+                    <i class="fas fa-chart-area" style="padding-right: 8px;"></i>
+                    <span>Thống kê</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-toggle">
+            <button id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </aside>
+
+    <main>
+        <div class="main-header">
+            <h1>Quản lý độc giả</h1>
+            <button class="btn" onclick="showAddReaderPopup()">
+                <i class="fas fa-plus"></i> Thêm độc giả
+            </button>
+        </div>
+
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm theo mã độc giả hoặc tên..." oninput="searchReaders()">
+                    <span class="search-icon" onclick="searchReaders()"><i class="fas fa-search"></i></span>
+                    <span class="clear-search" id="clear-search" onclick="clearSearch()"><i class="fas fa-times"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <table id="reader-list">
+            <thead>
+                <tr>
+                    <th>Mã độc giả</th>
+                    <th>Họ và tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu sẽ được thêm động bằng JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Popup thêm độc giả -->
+        <div id="add-reader-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('add-reader-popup')">×</span>
+                <h2>Thêm độc giả</h2>
+                <div class="form-group">
+                    <label>Mã độc giả:</label>
+                    <input type="text" id="add-reader-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên <span class="required">*</span>:</label>
+                    <input type="text" id="add-reader-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Ngày sinh (DD/MM/YYYY) <span class="required">*</span>:</label>
+                    <input type="text" id="add-reader-dob" maxlength="10" placeholder="DD/MM/YYYY" required>
+                </div>
+                <div class="form-group">
+                    <label>Giới tính <span class="required">*</span>:</label>
+                    <select id="add-reader-gender" required>
+                        <option value="">Chọn giới tính</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại <span class="required">*</span>:</label>
+                    <input type="text" id="add-reader-phone" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                </div>
+                <div class="form-group">
+                    <label>Email <span class="required">*</span>:</label>
+                    <input type="email" id="add-reader-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ <span class="required">*</span>:</label>
+                    <input type="text" id="add-reader-address" required>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-save" onclick="addReader()">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('add-reader-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup chỉnh sửa độc giả -->
+        <div id="edit-reader-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('edit-reader-popup')">×</span>
+                <h2>Chỉnh sửa độc giả</h2>
+                <div class="form-group">
+                    <label>Mã độc giả:</label>
+                    <input type="text" id="edit-reader-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên <span class="required">*</span>:</label>
+                    <input type="text" id="edit-reader-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Ngày sinh (DD/MM/YYYY) <span class="required">*</span>:</label>
+                    <input type="text" id="edit-reader-dob" maxlength="10" placeholder="DD/MM/YYYY" required>
+                </div>
+                <div class="form-group">
+                    <label>Giới tính <span class="required">*</span>:</label>
+                    <select id="edit-reader-gender" required>
+                        <option value="">Chọn giới tính</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại <span class="required">*</span>:</label>
+                    <input type="text" id="edit-reader-phone" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                </div>
+                <div class="form-group">
+                    <label>Email <span class="required">*</span>:</label>
+                    <input type="email" id="edit-reader-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ <span class="required">*</span>:</label>
+                    <input type="text" id="edit-reader-address" required>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-save" onclick="saveEditedReader()">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('edit-reader-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup xác nhận xóa độc giả -->
+        <div id="delete-reader-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('delete-reader-popup')">×</span>
+                <h2>Xác nhận xóa độc giả</h2>
+                <p>Bạn có chắc chắn muốn xóa độc giả này?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-confirm" onclick="deleteReader()">
+                        <i class="fas fa-check"></i> Xác nhận
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('delete-reader-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup thông báo tùy chỉnh -->
+        <div id="custom-alert-popup" class="custom-alert" style="display:none;">
+            <div class="custom-alert-content">
+                <p id="custom-alert-message"></p>
+                <button class="btn btn-ok" onclick="closeCustomAlert()">OK</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="./js/admin-readers.js"></script>
+</body>
+</html>

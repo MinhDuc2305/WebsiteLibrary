@@ -1,0 +1,108 @@
+﻿@model WebsiteLibrary.Models.Entities.Account
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Views/Shared/_LayoutReader.cshtml";
+}
+
+<div class="library-main-section">
+    <div class="library-main-wrapper">
+        <div class="library-sidebar">
+            <ul class="library-nav-menu">
+                <li class="library-nav-item" data-target="library-personal-content">Thông Tin Cá Nhân</li>
+                <li class="library-nav-separator"></li>
+                <li class="library-nav-item" data-target="library-card-content">Thông Tin Thẻ Thư Viện</li>
+            </ul>
+        </div>
+
+        <div class="library-content-area">
+            @if (Model == null)
+            {
+                <section id="library-personal-content" class="library-content-section library-personal-section active">
+                    <h2 class="library-section-title">Lỗi</h2>
+                    <p>Không thể tải thông tin cá nhân. Vui lòng đăng nhập lại hoặc liên hệ quản trị viên.</p>
+                </section>
+            }
+            else
+            {
+                <section id="library-personal-content" class="library-content-section library-personal-section active">
+                    <h2 class="library-section-title">Thông Tin Cá Nhân</h2>
+                    <div class="library-info-list">
+                        <div class="library-info-item">
+                            <label class="library-info-label">Mã độc giả:</label>
+                            <span class="library-info-value">@Model.ID</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Họ và tên:</label>
+                            <span class="library-info-value">@Model.Name</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Năm sinh:</label>
+                            <span class="library-info-value">@Model.DateOfBirth.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Giới tính:</label>
+                            <span class="library-info-value">@Model.Gender</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Số điện thoại:</label>
+                            <span class="library-info-value">@Model.PhoneNumber</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Email:</label>
+                            <span class="library-info-value">@Model.Email</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Trình độ văn hóa:</label>
+                            <span class="library-info-value">@Model.EducationLevel</span>
+                        </div>
+                        <div class="library-info-item">
+                            <label class="library-info-label">Địa chỉ:</label>
+                            <span class="library-info-value">@Model.Address</span>
+                        </div>
+                        <button class="library-action-button" onclick="window.location.href='/Reader/EditInfo'">Chỉnh Sửa</button>
+                    </div>
+                </section>
+
+                <section id="library-card-content" class="library-content-section library-card-section">
+                    <h2 class="library-section-title">Thông Tin Thẻ Thư Viện</h2>
+                    <div class="library-card-grid">
+                        <div class="library-card-image">
+                            <img src="/images/Ảnh thẻ.jpg" alt="Ảnh thẻ 3x4" class="library-card-photo">
+                        </div>
+                        <div class="library-card-details">
+                            <div class="library-card-info">
+                                <div class="library-card-row">
+                                    <label class="library-info-label">Mã Thẻ:</label>
+                                    <span class="library-info-value">@Model.ID</span>
+                                </div>
+                                <div class="library-card-row">
+                                    <label class="library-info-label">Thời Gian Thẻ:</label>
+                                    <div class="card-time-options" id="timeOptions">
+                                        <span class="card-time-option year-2024" data-year="2024">2024</span>
+                                        <span class="card-time-option year-2025 selected" data-year="2025">2025</span>
+                                        <span class="card-time-option year-2026" data-year="2026">2026</span>
+                                    </div>
+                                </div>
+                                <div class="library-card-row">
+                                    <label class="library-info-label">Tình Trạng Thẻ:</label>
+                                    <span class="library-info-value card-status-item" id="cardStatus">
+                                        <span class="status-circle"><i class="fas fa-check"></i></span>
+                                        <span class="status-text"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="library-renew-button" onclick="window.location.href='/Reader/RenewCard'">
+                                <span class="renew-icon"></span> Gia Hạn Thẻ
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="~/js/info.js"></script>
+}

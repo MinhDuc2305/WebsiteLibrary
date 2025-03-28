@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý thẻ thư viện - Admin</title>
+    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="./css/admin-users.css">
+    <link rel="stylesheet" href="./css/admin-library-cards.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">Admin - YourWebsite</div>
+        <div class="user-info">
+            <span id="admin-name">[Admin Name]</span>
+            <a href="/logout">Đăng xuất</a>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-book-open" style="padding-right: 8px;"></i>
+            <span>Books Admin</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="admin-dashboard.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt" style="padding-right: 8px;"></i>
+                    <span>Bảng điều khiển</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-readers.html" class="nav-link">
+                    <i class="fas fa-users" style="padding-right: 8px;"></i>
+                    <span>Quản lý độc giả</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-book.html" class="nav-link">
+                    <i class="fas fa-book" style="padding-right: 8px;"></i>
+                    <span>Quản lý sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-copybook.html" class="nav-link">
+                    <i class="fas fa-book" style="padding-right: 8px;"></i>
+                    <span>Quản lý bản sao sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-library-cards.html" class="nav-link">
+                    <i class="fas fa-id-card" style="padding-right: 8px;"></i>
+                    <span>Quản lý thẻ thư viện</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-borrow-records.html" class="nav-link">
+                    <i class="fas fa-tasks" style="padding-right: 8px;"></i>
+                    <span>Quản lý phiếu mượn trả</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-book-reservations.html" class="nav-link">
+                    <i class="fas fa-shopping-cart" style="padding-right: 8px;"></i>
+                    <span>Quản lý đặt mượn sách</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="admin-stats.html" class="nav-link">
+                    <i class="fas fa-chart-area" style="padding-right: 8px;"></i>
+                    <span>Thống kê</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-toggle">
+            <button id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </aside>
+    
+    <main>
+        <div class="main-header">
+            <h1>Quản lý thẻ thư viện</h1>
+            <div class="button-group">
+                <button class="btn" onclick="showPendingCardsPopup()">
+                    <i class="fas fa-clipboard-check"></i> Duyệt thẻ thư viện
+                </button>
+                <button class="btn" onclick="showLockedCardsPopup()">
+                    <i class="fas fa-lock"></i> Danh sách các thẻ bị khóa
+                </button>
+            </div>
+        </div>
+
+        <!-- Thanh tìm kiếm -->
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm theo ID thẻ, ID độc giả hoặc tên độc giả..." oninput="searchCards()">
+                    <span class="search-icon" onclick="searchCards()"><i class="fas fa-search"></i></span>
+                    <span class="clear-search" id="clear-search" onclick="clearSearch()"><i class="fas fa-times"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng Quản lý thẻ thư viện -->
+        <table id="library-cards-list">
+            <thead>
+                <tr>
+                    <th>ID thẻ thư viện</th>
+                    <th>ID độc giả</th>
+                    <th>Tên độc giả</th>
+                    <th>Ngày tạo</th>
+                    <th>Gia hạn</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu sẽ được thêm động bằng JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Popup duyệt thẻ thư viện -->
+        <div id="pending-cards-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('pending-cards-popup')">×</span>
+                <h2>Duyệt thẻ thư viện</h2>
+                <table id="pending-cards-table">
+                    <thead>
+                        <tr>
+                            <th>ID thẻ thư viện</th>
+                            <th>ID độc giả</th>
+                            <th>Tên độc giả</th>
+                            <th>Ngày tạo</th>
+                            <th>Gia hạn</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dữ liệu sẽ được thêm động bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Popup xác nhận/loại bỏ thẻ -->
+        <div id="confirm-action-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('confirm-action-popup')">×</span>
+                <h2 id="confirm-action-title"></h2>
+                <p id="confirm-action-message"></p>
+                <div class="modal-actions">
+                    <button class="btn btn-confirm" id="confirm-action-btn">
+                        <i class="fas fa-check"></i> Xác nhận
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('confirm-action-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup chi tiết độc giả/thẻ thư viện -->
+        <div id="reader-details-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('reader-details-popup')">×</span>
+                <h2 id="reader-details-title"></h2>
+                <div class="reader-info" id="reader-info-content">
+                    <!-- Nội dung sẽ được thêm động bằng JavaScript -->
+                </div>
+                <div class="modal-actions" id="reader-details-actions">
+                    <button class="btn btn-edit" onclick="showEditCardPopup()">
+                        <i class="fas fa-edit"></i> Sửa
+                    </button>
+                    <button class="btn btn-lock" onclick="lockCardConfirm()">
+                        <i class="fas fa-lock"></i> Khóa thẻ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup chỉnh sửa thông tin thẻ -->
+        <div id="edit-card-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('edit-card-popup')">×</span>
+                <h2>Chỉnh sửa thông tin thẻ</h2>
+                <div class="form-group">
+                    <label>ID thẻ thư viện:</label>
+                    <input type="text" id="edit-card-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label>ID độc giả:</label>
+                    <input type="text" id="edit-reader-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên:</label>
+                    <input type="text" id="edit-reader-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Ngày tạo:</label>
+                    <input type="text" id="edit-card-created" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Gia hạn:</label>
+                    <select id="edit-card-duration">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-save" onclick="saveEditedCard()">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('edit-card-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup xác nhận khóa thẻ -->
+        <div id="lock-card-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('lock-card-popup')">×</span>
+                <h2>Xác nhận khóa thẻ</h2>
+                <p>Bạn có chắc chắn muốn khóa thẻ của độc giả này?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-confirm" onclick="lockCard()">
+                        <i class="fas fa-check"></i> Xác nhận
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('lock-card-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup danh sách thẻ bị khóa -->
+        <div id="locked-cards-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('locked-cards-popup')">×</span>
+                <h2>Danh sách các thẻ bị khóa</h2>
+                <table id="locked-cards-table">
+                    <thead>
+                        <tr>
+                            <th>ID thẻ thư viện</th>
+                            <th>ID độc giả</th>
+                            <th>Tên độc giả</th>
+                            <th>Ngày tạo</th>
+                            <th>Gia hạn</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dữ liệu sẽ được thêm động bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Popup xác nhận mở khóa thẻ -->
+        <div id="unlock-card-popup" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('unlock-card-popup')">×</span>
+                <h2>Xác nhận mở khóa thẻ</h2>
+                <p>Bạn có chắc chắn muốn mở khóa thẻ của độc giả này?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-confirm" onclick="unlockCard()">
+                        <i class="fas fa-check"></i> Xác nhận
+                    </button>
+                    <button class="btn btn-cancel" onclick="closeModal('unlock-card-popup')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup thông báo tùy chỉnh -->
+        <div id="custom-alert-popup" class="custom-alert" style="display:none;">
+            <div class="custom-alert-content">
+                <p id="custom-alert-message"></p>
+                <button class="btn btn-ok" onclick="closeCustomAlert()">OK</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="./js/admin-library-cards.js"></script>
+</body>
+</html>

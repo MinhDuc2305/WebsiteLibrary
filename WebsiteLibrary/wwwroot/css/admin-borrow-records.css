@@ -1,0 +1,445 @@
+/* File: css/admin-borrow-records.css */
+
+/* Thanh tìm kiếm */
+.search-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 10px 40px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-container input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #6c757d;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+    color: #007bff;
+}
+
+.clear-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #6c757d;
+    cursor: pointer;
+    display: none;
+    transition: color 0.3s ease;
+}
+
+.clear-search:hover {
+    color: #dc3545;
+}
+
+/* Button "Thêm phiếu mượn" */
+.search-section .btn {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+.search-section .btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.search-section .btn:active {
+    transform: translateY(0);
+}
+
+/* Table styles */
+#borrow-records-list {
+    margin-top: 20px;
+}
+
+#borrow-records-list th,
+#borrow-records-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+#borrow-records-list th {
+    background-color: #f8f9fa;
+    color: #2c88a6;
+    font-weight: 600;
+}
+
+#borrow-records-list tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button styles in table */
+#borrow-records-list td .btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-right: 5px;
+}
+
+#borrow-records-list td .btn:hover {
+    transform: translateY(-2px);
+}
+
+#borrow-records-list td .btn:active {
+    transform: translateY(0);
+}
+
+#borrow-records-list td .btn:nth-child(1) {
+    background-color: #007bff; /* Nút "Sửa" màu xanh dương */
+    color: white;
+}
+
+#borrow-records-list td .btn:nth-child(1):hover {
+    background-color: #0056b3;
+}
+
+#borrow-records-list td .btn:nth-child(2) {
+    background-color: #dc3545; /* Nút "Xóa" màu đỏ */
+    color: white;
+}
+
+#borrow-records-list td .btn:nth-child(2):hover {
+    background-color: #c82333;
+}
+
+#borrow-records-list td .btn:nth-child(3) {
+    background-color: #28a745; /* Nút "Chi tiết" màu xanh lá */
+    color: white;
+}
+
+#borrow-records-list td .btn:nth-child(3):hover {
+    background-color: #218838;
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px; /* Giảm chiều rộng để modal gọn hơn */
+    border-radius: 10px; /* Bo góc mềm mại hơn */
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng để modal nổi bật */
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.close-button {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 28px; /* Tăng kích thước nút đóng */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: #dc3545;
+}
+
+/* Form inside modal */
+.modal .form-group {
+    margin-bottom: 20px; /* Tăng khoảng cách giữa các trường */
+}
+
+.modal .form-group label {
+    display: block;
+    margin-bottom: 8px; /* Tăng khoảng cách giữa label và input */
+    color: #2c88a6;
+    font-weight: 600;
+    font-size: 16px; /* Tăng kích thước chữ của label */
+}
+
+.modal .form-group input,
+.modal .form-group select {
+    width: 100%;
+    padding: 10px; /* Tăng padding để input/select dễ nhìn hơn */
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Bo góc mềm mại hơn */
+    font-size: 15px; /* Tăng kích thước chữ trong input/select */
+    transition: border-color 0.3s ease;
+}
+
+.modal .form-group input:focus,
+.modal .form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.modal h2 {
+    font-size: 22px; /* Tăng kích thước tiêu đề */
+    color: #2c88a6;
+    margin-bottom: 25px; /* Tăng khoảng cách dưới tiêu đề */
+    text-align: center;
+    font-weight: 700; /* Làm tiêu đề đậm hơn */
+}
+
+.modal-actions {
+    margin-top: 30px; /* Tăng khoảng cách trên nút */
+    text-align: center; /* Căn giữa các nút */
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Tạo khoảng cách giữa các nút */
+}
+
+.modal-actions .btn {
+    padding: 10px 20px; /* Tăng kích thước nút */
+    font-size: 15px; /* Tăng kích thước chữ trong nút */
+    border-radius: 5px; /* Bo góc mềm mại hơn */
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.modal-actions .btn:hover {
+    transform: translateY(-2px);
+}
+
+.modal-actions .btn:active {
+    transform: translateY(0);
+}
+
+.modal-actions .btn-save {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-actions .btn-save:hover {
+    background-color: #0056b3;
+}
+
+.modal-actions .btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal-actions .btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.modal-actions .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-actions .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Borrow info in details modal */
+.borrow-info p {
+    margin-bottom: 15px; /* Tăng khoảng cách giữa các dòng */
+    font-size: 15px; /* Tăng kích thước chữ */
+    display: flex;
+    justify-content: space-between; /* Căn đều nội dung */
+    padding: 5px 0;
+    border-bottom: 1px solid #f0f0f0; /* Thêm đường viền dưới mỗi dòng */
+}
+
+.borrow-info p strong {
+    color: #2c88a6;
+    font-weight: 600;
+    flex: 0 0 40%; /* Đảm bảo phần "strong" chiếm 40% chiều rộng */
+}
+
+.borrow-info p span {
+    flex: 0 0 60%; /* Phần nội dung chiếm 60% chiều rộng */
+    text-align: right;
+    color: #333;
+}
+
+/* Notification modal */
+.notification-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.notification-modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.notification-content {
+    position: relative;
+    background-color: #1a1a1a;
+    margin: 20% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    border: 2px solid #ff4d4d;
+    color: white;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.notification-modal.show .notification-content {
+    transform: scale(1);
+}
+
+.notification-content p {
+    margin: 0 0 20px;
+    font-size: 16px;
+}
+
+.notification-content .btn-ok {
+    padding: 8px 20px;
+    background-color: #b3d7ff;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.notification-content .btn-ok:hover {
+    background-color: #99c2ff;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .main-header {
+        text-align: center;
+    }
+
+    .search-box {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .search-section .btn {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    #borrow-records-list thead {
+        display: none;
+    }
+
+    #borrow-records-list tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+    }
+
+    #borrow-records-list tbody td {
+        display: grid;
+        grid-template-columns: 35% 65%;
+        padding: 8px 15px;
+        border: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    #borrow-records-list tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #2c88a6;
+    }
+
+    .modal-content,
+    .notification-content {
+        width: 90%;
+        padding: 20px; /* Giảm padding trên thiết bị nhỏ */
+    }
+
+    .modal h2 {
+        font-size: 20px; /* Giảm kích thước tiêu đề trên thiết bị nhỏ */
+    }
+
+    .modal .form-group label {
+        font-size: 14px; /* Giảm kích thước chữ label */
+    }
+
+    .modal .form-group input,
+    .modal .form-group select {
+        font-size: 14px; /* Giảm kích thước chữ trong input/select */
+    }
+
+    .modal-actions .btn {
+        padding: 8px 15px; /* Giảm kích thước nút */
+        font-size: 14px; /* Giảm kích thước chữ trong nút */
+    }
+
+    .borrow-info p {
+        font-size: 14px; /* Giảm kích thước chữ trong modal chi tiết */
+    }
+}
